@@ -1,0 +1,56 @@
+<div class="container">
+	<form id="edituser" method="POST">
+		<input type="hidden" name="uuiduser" value="{{ datauser.uuid }}">
+		<input type="hidden" name="action" value="edituser">
+		<div class="form-group">
+			<label for="firstname" class="font-thai-regular">ชื่อ</label>
+			<input type="text" class="form-control font-thai-light" id="firstname" name="firstname" placeholder="First Name" value="{{ datauser.firstname }}" required> 
+		</div>
+		<div class="form-group">
+			<label for="lastname" class="font-thai-regular">นามสกุล</label>
+			<input type="text" class="form-control font-thai-light" id="lastname" name="lastname" placeholder="Last Name" value="{{ datauser.lastname }}" required>
+		</div>
+		<div class="form-group">
+			<label for="emailuser" class="font-thai-regular">อีเมล</label>
+			<input type="email" class="form-control font-thai-light" id="emailuser" name="emailuser" placeholder="Email" value="{{ datauser.email }}" required>
+		</div>
+		<button type="submit" class="btn btn-success font-thai-regular btn-block"><i class="fas fa-edit"></i> แก้ไขผู้ใช้งาน</button>
+	</form>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$("#edituser").submit(function(e){
+			e.preventDefault();
+
+			$.ajax({
+				url : "/edit",
+				type : "POST",
+				data : $(this).serialize(),
+				dataType : "json",
+				cache : false,
+				success : function(s){
+					Swal.fire({
+						icon : s.data.icon,
+						title : s.data.title,
+						text : s.data.description,
+						timer : 4000
+					}).then((result) =>{
+						if(result.value){
+							if(s.data.redirect != "") {
+								location.href=s.data.redirect;
+							}
+						}
+					});
+				},
+				error : function(e){
+					Swal.fire({
+						icon : "error",
+						title : "เกิดข้อผิดพลาด",
+						text : "ระบบเกิดปัญหาขัดข้อง โปรดติดต่อที่ฝ่ายผู้ดูแลระบบ"
+					});
+				}
+			})
+		});
+	});
+</script>

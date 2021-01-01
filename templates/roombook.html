@@ -1,0 +1,45 @@
+{% from "base/macros.html" import setstatus with context %}
+<div class="container">
+	<div class="table-responsive">
+		<table class="table bg-white">
+			<tbody  class="font-thai-light">
+				<tr>
+					<td class="font-thai-bold">ห้องพัก</td>
+					<td class="font-thai-light">{{ data.room }}</td>
+				</tr>
+				<tr>
+					<td class="font-thai-bold">สถานะ</td>
+					<td class="font-thai-regular">{{ setstatus(status) }}</td>
+				</tr>
+				<tr>
+					<td class="font-thai-bold">ราคา / วัน</td>
+					<td class="font-thai-light">{{ data.price }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<form id="bookroom" method="POST">
+			<input type="hidden" name="uuid" value="{{ data.uuidroom }}">
+			<input type="hidden" id="price_preview" value="{{ data.price }}">
+			<div class="form-group" id="startbook" data-target-input="nearest">
+				<label for="startbook" class="font-thai-regular">เริ่มพักวันที่</label>
+				<input type="text" class="form-control datetimepicker-input font-thai-light" id="startbook_date" name="startbook" data-toggle="datetimepicker" data-target="#startbook" readonly required>
+			</div>
+			<div class="form-group" id="endbook" data-target-input="nearest">
+				<label for="endbook" class="font-thai-regular">ถึงวันที่</label>
+				<input type="text" class="form-control datetimepicker-input font-thai-light" name="endbook" data-toggle="datetimepicker" data-target="#endbook" readonly required>
+			</div>
+			<hr>
+			<table class="table bg-white">
+				<tbody  class="font-thai-light">
+					<tr>
+						<td class="font-thai-bold">รวมทั้งสิ้น</td>
+						<td class="font-thai-light" id="priceall">0 บาท</td>
+					</tr>
+				</tbody>
+			</table>
+			<hr>
+			<button type="submit" class="btn btn-success bookroomd font-thai-regular btn-block">จองห้องพัก</button>
+		</form>
+	</div>
+</div>	

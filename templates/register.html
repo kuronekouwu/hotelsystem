@@ -1,0 +1,58 @@
+{% extends "base/base.html" %}
+{% block contents %}
+<div class="overlay">
+	{% include "base/navbars.html" %}
+	<div class="container">
+		<div class="row align-items-center justify-content-center" style="height: 70vh;">
+			<div class="col-md-6 mb-4"> 
+				<div class="card" style="border-radius: 0;">
+					<div class="card-body">
+					<center>
+						<h4 class="font-thai-bold">สมัครสมาชิก</h4>
+					</center>
+					<hr>
+					<form id="register" method="post">
+						<div class="form-group">
+							<label for="username" class="font-thai-regular"><i class="fas fa-user"></i> ชื่อผู้ใช้งาน</label>
+							<input type="username" class="form-control font-thai-light" id="username" name="username" placeholder="Username" required>
+						</div>
+						<div class="form-group">
+							<label for="password" class="font-thai-regular"><i class="fas fa-key"></i> รหัสผ่าน</label>
+							<input type="password" class="form-control font-thai-light" id="password" name="password" placeholder="Password" required>
+                        </div>
+                        <div class="form-group">
+							<label for="password" class="font-thai-regular"><i class="fas fa-key"></i> รหัสผ่านอีกครั้ง</label>
+							<input type="password" class="form-control font-thai-light" id="conpassword" name="conpassword" placeholder="Confrim Password" required>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="name" class="font-thai-regular">ชื่อจริง</label>
+                            <input type="text" name="firstname" class="form-control font-thai-light" placeholder="First Name"  required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="font-thai-regular">นามสกุล</label>
+                            <input type="text" name="lastname" class="form-control font-thai-light" placeholder="Last Name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="name" class="font-thai-regular">เพศ</label>
+                            <select class="form-control font-thai-light" name="gender" required>
+                                <option value="male">ชาย</option>
+                                <option value="female">หญิง</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="name" class="font-thai-regular">อีเมล</label>
+                            <input type="email" name="email" class="form-control font-thai-light" placeholder="E-mail" required>
+                        </div>
+                        <hr>
+						<button type="submit" class="btn btn-primary btn-block font-thai-light" style="border-radius: 0px;"><i class="fal fa-sign-in"></i> สมัครสมาชิก</button>
+					</form>
+					<hr>
+					</div>
+				  </div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

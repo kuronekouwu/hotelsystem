@@ -1,0 +1,52 @@
+<div class="container">
+	<form id="editroomdata" method="POST">
+		<input type="hidden" name="uuidgroup" value="{{ datagroup.uuid }}">
+		<input type="hidden" name="action" value="editgroup">
+		<div class="form-group">
+            <label for="groupname" class="font-thai-regular">ชื่อกลุ่ม</label>
+            <input type="text" class="form-control font-thai-light" id="groupname" name="groupname" placeholder="Group Name" value="{{ datagroup.title }}" required>
+        </div>
+        <div class="form-group">
+            <label for="grouppassword" class="font-thai-regular">รหัสผ่านกลุ่ม</label>
+            <input type="password" class="form-control font-thai-light" id="grouppassword" name="grouppassword" placeholder="Group Password" value="{{ datagroup.password }}" required>
+        </div>
+		<button type="submit" class="btn btn-success font-thai-regular btn-block"><i class="fas fa-edit"></i> แก้ไขห้องพัก</button>
+	</form>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$("#editroomdata").submit(function(e){
+			e.preventDefault();
+
+			$.ajax({
+				url : "/edit",
+				type : "POST",
+				data : $(this).serialize(),
+				dataType : "json",
+				cache : false,
+				success : function(s){
+					Swal.fire({
+						icon : s.data.icon,
+						title : s.data.title,
+						text : s.data.description,
+						timer : 4000
+					}).then((result) =>{
+						if(result.value){
+							if(s.data.redirect != "") {
+								location.href=s.data.redirect;
+							}
+						}
+					});
+				},
+				error : function(e){
+					Swal.fire({
+						icon : "error",
+						title : "เกิดข้อผิดพลาด",
+						text : "ระบบเกิดปัญหาขัดข้อง โปรดติดต่อที่ฝ่ายผู้ดูแลระบบ"
+					});
+				}
+			})
+		});
+	});
+</script>

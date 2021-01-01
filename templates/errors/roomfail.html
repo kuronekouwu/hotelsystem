@@ -1,0 +1,21 @@
+{% extends "base/base.html" %}
+{% block contents %}
+<div class="overlay">
+	{% include "base/navbars.html" %}
+	<div class="container">
+		<div class="row align-items-center justify-content-center" style="height: 70vh;">
+			<div class="col-md-12 mb-4"> 
+				<div class="card" style="border-radius: 0; background-color: rgba(255,255,255, .85);">
+					<div class="card-body">
+					  <h4 class="font-thai-bold"><i class="fas fa-money-bill"></i> ชำระเงินไม่สำเร็จ</h4>
+                      <hr>
+                      <div class="alert alert-warning font-thai-regular" role="alert">
+                        ชำระเงินไม่สำเร็จ โปรดกรุณาเลือกห้องใหม่
+                    </div>
+					</div>
+				  </div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

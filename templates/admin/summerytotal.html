@@ -1,0 +1,44 @@
+{% extends "admin/base/base.html" %}
+{% block css %}
+	<!-- Custom styles for this page -->
+	<link href="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+{% block contents %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+	<!-- Page Heading -->
+	<h1 class="h3 mb-2 text-gray-800 font-thai-bold">{{ page }}</h1>
+
+	<!-- DataTales Example -->
+	<div class="card shadow mb-4">
+		<div class="card-header py-3 font-thai-bold">
+			{{ page }}
+		</div>
+		<div class="card-body">
+			<form id="summerydata" method="POST">
+				<div class="form-group">
+				  <label for="startsummery" class="font-thai-regular">วันที่</label>
+				  <input type="text" class="form-control datetimepicker-input font-thai-light" id="startsummery" name="startsummery" data-toggle="datetimepicker" data-target="#startsummery" readonly required>
+				</div>
+				<div class="form-group">
+				  <label for="endsummery" class="font-thai-regular">ถึงวันที่</label>
+				  <input type="text" class="form-control datetimepicker-input font-thai-light" id="endsummery" name="endsummery" data-toggle="datetimepicker" data-target="#endsummery" readonly required>
+				</div>
+				<hr>
+				<button type="submit" class="btn btn-primary font-thai-regular">สรุปยอด</button>
+			  </form>
+		</div>
+	</div>
+	<div id="showdata"></div>
+</div>
+<!-- /.container-fluid -->
+
+{% endblock %}
+
+{% block js %}
+		<script src="{{ url_for('static',filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+		<script src="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+		<script src="/js/app.summery.js"></script>
+{% endblock %}

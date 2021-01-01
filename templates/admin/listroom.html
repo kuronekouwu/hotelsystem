@@ -1,0 +1,177 @@
+{% extends "admin/base/base.html" %}
+{% block css %}
+	<!-- Custom styles for this page -->
+	<link href="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contents %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+	<!-- Page Heading -->
+	<h1 class="h3 mb-2 text-gray-800 font-thai-bold">{{ page }}</h1>
+
+	<!-- DataTales Example -->
+	<div class="card shadow mb-4">
+		<div class="card-header py-3 font-thai-bold">
+			{{ page }}
+		</div>
+		<div class="card-body">
+			<button type="button" class="btn btn-success mb-2 float-right font-thai-regular" id="addroom"><i class="fas fa-plus"></i> เพิ่มห้องพัก</button>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<thead>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>ห้อง</th>
+							<th>สถานะ</th>
+							<th>ราคา / วัน</th>
+							<th>กลุ่ม</th>
+							<th>การทำงาน</th>
+						</tr>
+					</thead>
+					<tbody class="font-thai-light">
+						{% for data in dataroom %}
+							<tr>
+								<td>{{ loop.index }}</td>
+								<td>{{ data.room }}</td>
+								{% if data.status != false %}
+									<td class="font-thai-light" style="color: green;">ห้องว่าง</td>
+								{% else %}
+									<td class="font-thai-light" style="color: red;">ห้องไม่ว่าง</td>
+								{% endif %}
+								<td>{{ data.price }}</td>
+								<td>{{ data.group }}</td>
+								<td>
+									<button class="btn btn-success btn-circle btn-sm" id="edit" data-uuid-room="{{ data.uuidroom }}"><i class="fas fa-edit"></i></button>
+									<button class="btn btn-danger btn-circle btn-sm" id="delete" data-uuid-room="{{ data.uuidroom }}" data-name-room="{{ data.room }}"><i class="fas fa-trash"></i></button>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>ห้อง</th>
+							<th>สถานะ</th>
+							<th>ราคา / วัน</th>
+							<th>กลุ่ม</th>
+							<th>การทำงาน</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.container-fluid -->
+
+<div class="modal" tabindex="-1" id="modal-data">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">เพิ่มห้องพัก</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<form id="addgroomdata" method="POST" enctype="multipart/form-data">
+						<input type="hidden" name="action" value="addroom">
+						<div class="form-group">
+							<label for="roomname" class="font-thai-regular">ห้องพัก</label>
+							<input type="text" class="form-control font-thai-light" id="roomname" name="roomname" placeholder="Room Name" required>
+						</div>
+						<div class="form-group">
+							<label for="groupid" class="font-thai-regular">กลุ่ม</label>
+							<div class="input-group mb-3">
+								<select class="form-control" id="groupid" name="groupid" required>
+									{% for group in datagroup %}
+									<option value="{{ group.uuid }}">{{ group.title }}</option>
+									{% endfor %}
+							</select>
+								<div class="input-group-append">
+									<button class="btn btn-success font-thai-regular btn-block" id="addgroup"><i class="fas fa-plus"></i> เพิ่มกลุ่ม</button>
+								</div>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="roomprice" class="font-thai-regular">ราคา / วัน</label>
+							<input type="number" class="form-control font-thai-light" id="roomprice" name="roomprice" placeholder="Room Price" required>
+						</div>
+						<div class="form-group">
+							<label for="roompassword" class="font-thai-regular">รหัสผ่านห้องพัก</label>
+							<input type="password" class="form-control font-thai-light" id="roompassword" name="roompassword" placeholder="Room Password" required>
+						</div>
+						<div class="form-group">
+							<label for="roomimage" class="font-thai-regular">รูปภาพห้องพัก</label>
+							<input class="font-thai-light" type="file" id="roomimage" name="roomimage" accept="image/*" required>
+						</div>
+						<button type="submit" class="btn btn-success font-thai-regular btn-block"><i class="fas fa-plus"></i> เพิ่มห้องพัก</button>
+					</form>
+				</div>					
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="modal-data-2">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">เพิ่มกลุ่ม</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<form id="addgroupdata" method="POST">
+						<input type="hidden" name="action" value="addgroup">
+						<div class="form-group">
+							<label for="groupname" class="font-thai-regular">ชื่อกลุ่ม</label>
+							<input type="text" class="form-control font-thai-light" id="groupname" name="groupname" placeholder="Group Name" required>
+						</div>
+						<div class="form-group">
+							<label for="grouppassword" class="font-thai-regular">รหัสผ่านกลุ่ม</label>
+							<input type="password" class="form-control font-thai-light" id="grouppassword" name="grouppassword" placeholder="Group Password" required>
+						</div>
+						<button type="submit" class="btn btn-success font-thai-regular btn-block"><i class="fas fa-plus"></i> เพิ่มกลุ่ม</button>
+					</form>
+				</div>	
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="modal-data-3">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">แก้ไขข้อมูล</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="dataeditroom">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+		<script src="{{ url_for('static',filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+		<script src="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+		<script src="/js/app.room.js"></script>
+{% endblock %}

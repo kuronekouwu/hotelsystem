@@ -1,0 +1,88 @@
+{% extends "admin/base/base.html" %}
+{% block css %}
+	<!-- Custom styles for this page -->
+	<link href="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contents %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+	<!-- Page Heading -->
+	<h1 class="h3 mb-2 text-gray-800 font-thai-bold">ตรวจสอบการชำระเงิน</h1>
+
+	<!-- DataTales Example -->
+	<div class="card shadow mb-4">
+		<div class="card-header py-3 font-thai-bold">
+			ตรวจสอบการชำระเงิน
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<thead>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>วันที่</th>
+							<th>ห้อง</th>
+							<th>สถานะ</th>
+							<th>การทำงาน</th>
+						</tr>
+					</thead>
+					<tbody class="font-thai-light">
+						{% for data in databook %}
+							<tr>
+								<td>{{ loop.index }}</td>
+								<td>{{ formatdate(data.date,year="True") }}</td>
+								<td>{{ data.details.roomname }}</td>
+								<td>{{ setstatus_payment(data.status) }}</td>
+								<td>
+									{% if data.status != "SUCCESSPAYMENT" and data.status != "FAILEDPAYMENT" and data.status != "TIMEOUTPAYMENT"  %}
+									<button class="btn btn-success btn-circle btn-sm" id="confrim" data-status="SUCCESSPAYMENT" data-uuid-book="{{ data.bookid }}"><i class="fas fa-check"></i></button>
+									<button class="btn btn-danger btn-circle btn-sm" id="confrim" data-status="FAILEDPAYMENT" data-uuid-book="{{ data.bookid }}" ><i class="fas fa-times"></i></button>
+									{% endif %}
+									<button class="btn btn-primary btn-circle btn-sm" id="dataimage" data-image-path="/idcard/{{ data.user.uuid }}"><i class="fas fa-id-card"></i></button>
+									<button class="btn btn-primary btn-circle btn-sm" id="dataimage" data-image-path="/slipbank/{{ data.user.uuid }}/{{ data.bookid }}"><i class="fas fa-sticky-note"></i></button>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>วันที่</th>
+							<th>ห้อง</th>
+							<th>สถานะ</th>
+							<th>การทำงาน</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.container-fluid -->
+<div class="modal" tabindex="-1" id="modal-data">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold" id="title">รูปภาพ</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<img id="data" class="img-fluid" src="">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+		<script src="{{ url_for('static',filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+		<script src="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+		<script src="/js/app.checkpayment.js"></script>
+{% endblock %}

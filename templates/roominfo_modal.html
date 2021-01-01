@@ -1,0 +1,25 @@
+{% from "base/macros.html" import setstatus with context %}
+<div class="container">
+	<div class="table-responsive">
+		<table class="table bg-white">
+			<tbody  class="font-thai-light">
+				<tr>
+					<td class="font-thai-bold">ห้องพัก</td>
+					<td class="font-thai-light">{{ data.room }}</td>
+				</tr>
+				<tr>
+					<td class="font-thai-bold">สถานะ</td>
+					<td class="font-thai-regular">{{ setstatus(status) }}</td>
+				</tr>
+				<tr>
+					<td class="font-thai-bold">ราคา / วัน</td>
+					<td class="font-thai-light">{{ data.price }}</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<h5 class="font-thai-bold">รูปภาพห้องพัก</h5>
+		<hr>
+		<img src="{{ images }}" class="img-fluid">
+	</div>
+</div>	

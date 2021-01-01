@@ -1,0 +1,39 @@
+{% from "base/macros.html" import formatdate,setstatus_payment_text with context %}
+<div class="container">
+	<input type="hidden" name="action" value="addbook">
+	<div class="form-group">
+		<label for="groupid" class="font-thai-regular">ห้องพัก</label>
+		<input type="text" class="form-control font-thai-light" value="{{ databook.details.roomname }}" readonly>
+	</div>
+	<div class="form-group">
+		<label for="roomprice" class="font-thai-regular">ราคา / วัน</label>
+		<input type="text" class="form-control font-thai-light" value="{{ databook.details.price }}" readonly>
+	</div>
+	<hr>
+	<div class="form-group" id="startbook" data-target-input="nearest">
+		<label for="startbook" class="font-thai-regular">เริ่มพักวันที่</label>
+		<input type="text" class="form-control datetimepicker-input font-thai-light" value="{{ formatdate(databook.details.start,year='True') }}" readonly>
+	</div>
+	<div class="form-group" id="endbook" data-target-input="nearest">
+		<label for="endbook" class="font-thai-regular">ถึงวันที่</label>
+		<input type="text" class="form-control datetimepicker-input font-thai-light" value="{{ formatdate(databook.details.end,year='True') }}" readonly>
+	</div>
+	<div class="form-group">
+		<label for="price_all" class="font-thai-regular">รวมทั้งสิ้น</label>
+		<input type="text" class="form-control font-thai-light" value="{{ databook.payment.payment_ammout }} บาท" readonly>
+	</div>
+	<hr>
+	<div class="form-group">
+		<label for="status" class="font-thai-regular">สถานะ</label>
+		<input type="text" class="form-control font-thai-light" value="{{ setstatus_payment_text(databook.status) }}" readonly>
+	</div>
+	<hr>
+	<div class="form-group">
+		<label for="status" class="font-thai-regular">จองวันที่</label>
+		<input type="text" class="form-control font-thai-light" value="{{ formatdate(databook.date,year='True') }}" readonly>
+	</div>
+	<div class="form-group">
+		<label for="status" class="font-thai-regular">ผู้จองห้องพัก</label>
+		<input type="text" class="form-control font-thai-light" value="{{ databook.user.name }}" readonly>
+	</div>
+</div>	

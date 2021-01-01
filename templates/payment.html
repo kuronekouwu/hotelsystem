@@ -1,0 +1,20 @@
+{% from "base/macros.html" import setstatus with context %}
+<div class="container">
+	<div class="table-responsive">
+		<center>
+            <h4 class="font-thai-bold">กรุณาสแกน QR Code พร้อมเพย์</h4>
+			<img src="{{ qrcodepay }}" alt="Qr Code พร้อมเพย์">
+			<hr>
+			<div class="alert alert-success font-thai-regular" role="alert">
+				ชื่อบัญชี : {{ nameow }}<br>
+				จำนวนเงิน : {{ ammout }}
+			</div>
+			<div class="alert alert-warning font-thai-regular" role="alert">
+					- หากทำการโอนเงินเสร็จสิ้นแล้ว โปรดทำการกดปุ่ม "แจ้งการชำระเงิน" เพื่อทำการจองห้องพัก<br>
+					- QR Code นี้ใช้งานได้ครั้งเดียวเท่านั้น<br>
+					- หากคุณไม่ชำระเงินภายใน 1 ชม. นี้ระบบจะทำการยกเลิกการจองห้องทันที
+			</div>
+			<a href="/rooms/{{ uuidbook }}/infopayment" class="btn btn-success font-thai-regular">แจ้งการชำระเงิน</a>
+		</center>
+	</div>
+</div>	

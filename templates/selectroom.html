@@ -1,0 +1,107 @@
+{% extends "base/base.html" %}
+{% block contents %}
+<div class="overlay">
+	{% include "base/navbars.html" %}
+	<div class="container">
+		<div class="row align-items-center justify-content-center" style="height: 80vh;">
+			<div class="col-md-12">
+				<div class="card" style="border-radius: 0; background-color: rgba(255,255,255, .95);">
+					<div class="card-body">
+						<h4 class="font-thai-bold"><i class="fas fa-user"></i> กรุณาเลือกห้องพัก</h4>
+						  <hr>
+						  {% for datarooms in rooms %}
+						 	<h4 class="font-thai-bold">{{ datarooms.title }} <button type="button" class="btn btn-success font-thai-light float-center maproom"><i class="fas fa-bed"></i> แผนผังห้องพัก</button></h4>
+						 	<div class="table-responsive">
+								<table class="table bg-white">
+									<thead class="font-thai-bold">
+										<tr>
+											<th scope="col">ห้องที่</th>
+											<th scope="col">ราคา</th>
+											<th scope="col">สถานะ</th>
+											<th scope="col"></th>
+										</tr>
+									</thead>
+									<tbody class="font-thai-light">
+										{% for roomsdetails in datarooms.roomdetail %}
+										<tr>
+											<td scope="row">{{ roomsdetails.room }}</td>
+											<td>{{ roomsdetails.price }}</td>
+											{% if roomsdetails.status != false %}
+												<td class="font-thai-regular" style="color: green;">ห้องว่าง</td>
+												<td>
+													<button type="button" class="btn btn-success font-thai-light float-center book" data-roomuuid="{{ roomsdetails.room }}"><i class="fas fa-sticky-note"></i> จองห้องพัก</button>
+													<button type="button" class="btn btn-primary font-thai-light float-center bookinfo" data-roomuuid="{{ roomsdetails.room }}"><i class="fas fa-info-circle"></i> ข้อมูลห้องพัก</button>
+												</td>
+											  {% else %}
+												  <td class="font-thai-regular" style="color: red;">ห้องไม่ว่าง</td>
+												  <td>
+													<button type="button" class="btn btn-primary font-thai-light float-center bookinfo" data-roomuuid="{{ roomsdetails.room }}"><i class="fas fa-info-circle"></i> ข้อมูลห้องพัก</button>
+												</td>
+											  {% endif %}
+											</td>
+										  </tr>
+										  {% endfor %}
+									</tbody>
+								</table>
+							</div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" tabindex="-1" id="bookrooms">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">จองห้องพัก</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="showroom"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" tabindex="-1" id="bookinfo">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">รายละเอียดห้องพัก</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="showinfo"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal" tabindex="-1" id="maproommodal">
+	<div class="modal-dialog modal-xl">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold"><i class="fas fa-bed"></i> แผนผังห้องพัก</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="showinfo">
+				<img src="{{ url_for('static',filename='images/layout/layout_data.png') }}"  class="img-fluid">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+{% block js %}
+<script src="{{ url_for('static',filename='vendor/app.selectroom_main.js') }}"></script>
+{% endblock %}

@@ -1,0 +1,147 @@
+{% extends "admin/base/base.html" %}
+{% block css %}
+	<!-- Custom styles for this page -->
+	<link href="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css">
+{% endblock %}
+{% block contents %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+	<!-- Page Heading -->
+	<h1 class="h3 mb-2 text-gray-800 font-thai-bold">{{ page }}</h1>
+
+	<!-- DataTales Example -->
+	<div class="card shadow mb-4">
+		<div class="card-header py-3 font-thai-bold">
+			{{ page }}
+		</div>
+		<div class="card-body">
+			<button type="button" class="btn btn-success mb-2 float-right font-thai-regular" id="addbook"><i class="fas fa-plus"></i> เพิ่มการจองห้องพัก</button>
+			<div class="table-responsive">
+				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<thead>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>ห้อง</th>
+							<th>สถานะห้อง</th>
+							<th>ราคา</th>
+							<th>สถานะการชำระเงิน</th>
+							<th>การทำงาน</th>
+						</tr>
+					</thead>
+					<tbody class="font-thai-light">
+						{% for data in databook %}
+							<tr>
+								<td>{{ loop.index }}</td>
+								<td>{{ data.details.roomname }}</td>
+								{% if data.status != false %}
+									<td class="font-thai-light" style="color: green;">ห้องว่าง</td>
+								{% else %}
+									<td class="font-thai-light" style="color: red;">ห้องไม่ว่าง</td>
+								{% endif %}
+								<td>{{ data.payment.payment_ammout }}</td>
+								<td>{{ setstatus_payment(data.status) }}</td>
+								<td>
+									<button class="btn btn-primary btn-circle btn-sm" id="info" data-uuid-book="{{ data.bookid }}"><i class="fas fa-info-circle"></i></button>
+									<button class="btn btn-danger btn-circle btn-sm" id="delete" data-uuid-book="{{ data.bookid }}" data-id="{{ loop.index }}" ><i class="fas fa-trash"></i></button>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>ห้อง</th>
+							<th>สถานะ</th>
+							<th>ราคา</th>
+							<th>จองห้องโดย</th>
+							<th>การทำงาน</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.container-fluid -->
+
+<div class="modal" tabindex="-1" id="modal-data">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">เพิ่มการจองห้องพัก</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<div class="container">
+					<form id="addbookdata" method="POST">
+						<input type="hidden" name="action" value="addbook">
+						<div class="form-group">
+							<label for="groupid" class="font-thai-regular">ห้องพัก</label>
+							<select class="form-control" id="roomlist" name="roomuuid" required>
+								<option value="" data-price="0" selected></option>
+							</select>
+						</div>
+						<div class="form-group">
+							<label for="roomprice" class="font-thai-regular">ราคา / วัน</label>
+							<input type="number" class="form-control font-thai-light" id="roomprice" required>
+						</div>
+						<hr>
+						<div class="form-group" id="startbook" data-target-input="nearest">
+							<label for="startbook" class="font-thai-regular">เริ่มพักวันที่</label>
+							<input type="text" class="form-control datetimepicker-input font-thai-light" id="startbook_date" name="startbook" data-toggle="datetimepicker" data-target="#startbook" readonly required>
+						</div>
+						<div class="form-group" id="endbook" data-target-input="nearest">
+							<label for="endbook" class="font-thai-regular">ถึงวันที่</label>
+							<input type="text" class="form-control datetimepicker-input font-thai-light"id="endbook_date" name="endbook" data-toggle="datetimepicker" data-target="#endbook" readonly required>
+						</div>
+						<div class="form-group">
+							<label for="price_all" class="font-thai-regular">รวมทั้งสิ้น</label>
+							<input type="text" class="form-control font-thai-light" id="price_all" value="0 บาท" readonly required>
+						</div>
+						<hr>
+						<div class="form-group">
+							<label for="status" class="font-thai-regular">สถานะ</label>
+							<select class="form-control font-thai-light" id="status" name="status" required>
+								<option value="NOPAYMENT">ยังไม่ได้ชำระเงิน</option>
+								<option value="SUCCESSPAYMENT">ชำระเงินสำเร็จ</option>
+							</select>
+						</div>
+						<button type="submit" class="btn btn-success font-thai-regular btn-block"><i class="fas fa-plus"></i> เพิ่มการจองห้องพัก</button>
+					</form>
+				</div>					
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="modal-data-2">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">ข้อมูลการจองห้องพัก</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="infobookdata"></div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+		<script src="{{ url_for('static',filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+		<script src="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+		<script src="/js/app.book.js"></script>
+{% endblock %}

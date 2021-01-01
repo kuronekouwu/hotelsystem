@@ -1,0 +1,105 @@
+{% extends "base/base.html" %}
+{% block contents %}
+<div class="overlay">
+	{% include "base/navbars.html" %}
+	<div class="container">
+		<div class="row d-flex justify-content-center">
+		  <div class="col-md-12">
+			<div class="card" style="border-radius: 0; background-color: rgba(255,255,255, .85);">
+			  <div class="card-body">
+				<h4 class="font-thai-bold"><i class="fas fa-info-circle"></i> ข้อมูลห้องพัก {{ inforoom.details.roomname }}</h4>
+				<hr>
+				<table class="table bg-white">
+					<tbody  class="font-thai-light">
+						<tr>
+							<td class="font-thai-bold">ห้องพัก</td>
+							<td class="font-thai-light">{{ inforoom.details.roomname }}</td>
+						</tr>
+						<tr>
+							<td class="font-thai-bold">เริ่มพักวันที่</td>
+							<td class="font-thai-light">{{ formatdate(inforoom.details.start,year="True") }}</td>
+						</tr>
+						<tr>
+							<td class="font-thai-bold">ถึงวันที่</td>
+							<td class="font-thai-light">{{ formatdate(inforoom.details.end,year="True") }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr>
+				<h4 class="font-thai-bold"><i class="far fa-money-bill-alt"></i> สถานะชำระเงิน</h4>
+				<table class="table bg-white">
+					<tbody  class="font-thai-light">
+						<tr>
+							<td class="font-thai-bold">จำนวนเงิน</td>
+							<td class="font-thai-light">{{ inforoom.payment.payment_ammout }} บาท</td>
+						</tr>
+						<tr>
+							<td class="font-thai-bold">สถานะ</td>
+							<td class="font-thai-regular">{{ setstatus_payment(inforoom.status) }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr>
+				{% if inforoom.status != "SUCCESSPAYMENT" and inforoom.status != "WAITINGPAYMENT" and inforoom.status != "TIMEOUTPAYMENT" and inforoom.status != "FAILEDPAYMENT" %}
+					<a href="/rooms/{{inforoom.bookid}}/infopayment" class="btn btn-success btn-block font-thai-light"><i class="far fa-money-bill-alt"></i> แจ้งชำระเงิน</a>
+					<button class="btn btn-primary font-thai-regular btn-block qrcode" data-uuidbook="{{ inforoom.bookid }}"><i class="fas fa-qrcode"></i> สแกน QR Code เพือชำระเงิน</button>
+
+				{% elif inforoom.status == "WAITINGPAYMENT" %}
+				<div class="alert alert-warning font-thai-regular" role="alert">
+					คุณได้ทำการส่งข้อมูลแล้ว โปรดรอฝ่ายเจ้าหน้าที่ตรวจสอบภายใน 24 ชม. นี้
+				</div>
+				{% elif inforoom.status == "FAILEDPAYMENT" %}
+				<div class="alert alert-warning font-thai-regular" role="alert">
+					ชำระเงินไม่สำเร็จ โปรดกรุณาเลือกห้องใหม่
+				</div>
+				{% elif inforoom.status == "TIMEOUTPAYMENT" %}
+				<div class="alert alert-danger font-thai-regular" role="alert">
+					หมดเวลาในการชำระเงินแล้ว โปรดกรุณาเลือกห้องใหม่
+				</div>
+				{% elif inforoom.status == "SUCCESSPAYMENT" %}
+				<hr>
+				<h4 class="font-thai-bold"><i class="fas fa-bed"></i> รหัสผ่านเข้าห้องพัก</h4>
+				<table class="table bg-white">
+					<tbody  class="font-thai-light">
+						<tr>
+							<td class="font-thai-bold">รหัสประตูใหญ่</td>
+							<td class="font-thai-light">{{ inforoom.password_group }}</td>
+						</tr>
+						<tr>
+							<td class="font-thai-bold">รหัสห้อง</td>
+							<td class="font-thai-light">{{ inforoom.password_room }}</td>
+						</tr>
+					</tbody>
+				</table>
+				<hr>
+				<h4 class="font-thai-bold"><i class="fas fa-sticky-note"></i> แผงผังโรงแรม</h4>
+				<img src="{{ url_for('static', filename='images/layout/layout_data.png')}}" class="img-fluid">
+				<a href="/download/7fd3ce2c84e3643559aab57784147039.pdf" class="btn btn-primary font-thai-light mt-2 btn-block"><i class="fas fa-download"></i> ดาวโหลด</a>
+				{% endif %}
+			  </div>
+			</div>
+		  </div>
+		</div>
+	  </div>
+</div>
+<div class="modal" tabindex="-1" id="modal-qrcode">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">ชำระเงิน</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="showqrcode"></div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+		</div>
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+{% block js %}
+<script src="{{ url_for('static',filename='vendor/app.qrcode.js') }}"></script>
+{% endblock %}

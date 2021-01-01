@@ -1,0 +1,51 @@
+{% extends "base/base.html" %}
+{% block contents %}
+<div class="overlay">
+	{% include "base/navbars.html" %}
+	<div class="container">
+		<div class="row align-items-center justify-content-center" style="height: 80vh;">
+			<div class="col-md-12 mb-4"> 
+				<div class="card" style="border-radius: 0; background-color: rgba(255,255,255, .85);">
+					<div class="card-body">
+					  <h4 class="font-thai-bold"><i class="fas fa-sticky-note"></i> ลิสจองห้องพัก</h4>
+					  <hr>
+					  <div class="table-responsive">
+						  <table class="table bg-white">
+							  <thead>
+								  <tr class="font-thai-bold"> 
+									  <th>#</th>
+									  <th>ห้อง</th>
+									  <th>ราคา</th>
+									  <th>เริ่มพัก</th>
+									  <th>ถึงวันที่</th>
+									  <th>สถานะ</th>
+									  <th>การทำงาน</th>
+								  </tr>
+							  </thead>
+							  <tbody  class="font-thai-light">
+								  {% for data in rooms %}
+								  <tr>
+									  <td class="font-thai-bold">{{ loop.index }}</td>
+									  <td class="font-thai-light">{{ data.details.roomuuid }}</td>
+									  <td class="font-thai-light">{{ data.payment.payment_ammout }}</td>
+									  <td class="font-thai-light">{{ formatdate(data.details.start,year="True") }}</td>
+									  <td class="font-thai-light">{{ formatdate(data.details.end,year="True") }}</td>
+									  <td class="font-thai-light">{{ setstatus_payment(data.status) }}</td>
+									  <td class="font-thai-light">
+										  <a href="/rooms/{{ data.bookid }}" class="btn btn-primary font-thai-light"><i class="fas fa-info-circle"></i> ดูข้อมูล</a>
+										  {% if data.status != "SUCCESSPAYMENT" and data.status != "WAITINGPAYMENT" and data.status != "TIMEOUTPAYMENT" and data.status != "FAILEDPAYMENT" %}
+											  <a href="/rooms/{{ data.bookid }}/infopayment" class="btn btn-success font-thai-light"><i class="far fa-money-bill-alt"></i> แจ้งชำระเงิน</a>
+										  {% endif %}
+									  </td>
+								  </tr>
+								  {% endfor %}
+							  </tbody>
+						  </table>
+					  </div>
+					</div>
+				  </div>
+			</div>
+		</div>
+	</div>
+</div>
+{% endblock %}

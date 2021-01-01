@@ -1,0 +1,70 @@
+{% macro setstatus(string) %}
+	{% if string == "True" %}
+		<font color="green">ห้องว่าง</font>
+	{% else %}
+		<font color="red">ห้องไม่ว่าง</font>
+	{% endif %}
+{% endmacro %}
+
+{% macro formatdate(datetime,year=False) %}
+{% set month={
+	"01" : "มกราคม",
+	"02" : "กุมภาพันธ์",
+	"03" : "มีนาคม",
+	"04" : "เมษายน",
+	"05" : "พฤษภาคม",
+	"06" : "มิถุนายน",
+	"07" : "กรกฏาคม",
+	"08" : "สิงหาคม",
+	"09" : "กันยายน",
+	"10" : "ตุลาคม",
+	"11" : "พฤศจิกายน",
+	"12" : "ธันวาคม"
+} %}
+
+{% if "True" in year %}
+{{ datetime.strftime("%d") }} {{ month[datetime.strftime("%m")] }} {{ datetime.strftime("%Y") }}
+{% else %}
+{{ datetime.strftime("%d") }} {{ month[datetime.strftime("%m")] }}
+{% endif %}
+{% endmacro %}
+
+{% macro setstatus_payment(string) %}
+	{% if string == "NOPAYMENT" %}
+		<font style="color:#e74c3c;">ยังไม่ได้ชำระเงิน</font>
+	{% elif string == "WAITINGPAYMENT" %}
+		<font style="color:#f1c40f;">รอการยืนยันชำระเงิน</font>
+	{% elif string == "SUCCESSPAYMENT" %}
+		<font style="color: #2ecc71;">ชำระเงินสำเร็จ</font>
+	{% elif string == "FAILEDPAYMENT" %}
+		<font style="color: #e74c3c;">ชำระเงินไม่สำเร็จ</font>
+	{% elif string == "TIMEOUTPAYMENT" %}
+		<font style="color:#e74c3c;">หมดเวลาการจองห้องพัก</font>
+	{% else %}
+		<font style="color:#f1c40f;">เกิดข้อผิดพลาด</font>
+	{% endif %}
+{% endmacro %}
+
+{% macro setstatus_payment_text(string) %}
+{% if string == "NOPAYMENT" %}
+ยังไม่ได้ชำระเงิน
+{% elif string == "WAITINGPAYMENT" %}
+รอการยืนยันชำระเงิน
+{% elif string == "SUCCESSPAYMENT" %}
+ชำระเงินสำเร็จ
+{% elif string == "FAILEDPAYMENT" %}
+ชำระเงินไม่สำเร็จ
+{% elif string == "TIMEOUTPAYMENT" %}
+หมดเวลาการจองห้องพัก
+{% else %}
+เกิดข้อผิดพลาด
+{% endif %}
+{% endmacro %}
+
+{% macro formatgender(gender) %}
+{% if gender == "male" %}
+ชาย
+{% else %}
+หญิง
+{% endif %}
+{% endmacro %}

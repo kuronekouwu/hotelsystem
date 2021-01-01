@@ -1,0 +1,46 @@
+{
+	"main" : {
+		"navbartitle" : "",
+		"title" : "Hotel System",
+		"description" : "This is a hotel system!",
+		"email" : "admin@hotelsystem.com",
+		"url" : "http://127.0.0.1:8082",
+		"url_admin" : "http://127.0.0.1:9000"
+	},
+
+	"metadata" : {
+		"lang" : "th",
+		"tags" : "hotelsystem",
+		"revisit" : "7 days",
+		"color" : "#5fddef"
+	},
+
+	"mongodb" : {
+		"host" : "123.123.123.123",
+		"port" : 27017,
+		"username" : "admin",
+		"password" : "admin",
+		"database" : "hotelsystem",
+		"database_auth" : "admin",
+		"srv" : false
+	},
+
+	"promptpay" : {	
+		"account" : "0999999999",
+		"name" : "นาย สมชาย ระกะ"
+	},
+
+	"emailsetting" : {
+		"email" : "support@hotelsystem.com",
+		"password" : "1234567890",
+		"email_admin" : "admin@hotelsystem.com"
+	},
+
+	"contact" : {
+		"facebook" : "ศิริฤกษ์ อินตาคำ",
+		"facebook_url" : "https://www.facebook.com/intakamsririeak/",
+		"instragram" : "mrwan2546",
+		"instragram_url" : "https://www.instagram.com/mrwan2546/",
+		"phone" : "123-123-1234"
+	}
+}

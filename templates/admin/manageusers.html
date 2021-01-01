@@ -1,0 +1,83 @@
+{% extends "admin/base/base.html" %}
+{% block css %}
+	<!-- Custom styles for this page -->
+	<link href="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.css')}}" rel="stylesheet">
+{% endblock %}
+{% block contents %}
+<!-- Begin Page Content -->
+<div class="container-fluid">
+
+	<!-- Page Heading -->
+	<h1 class="h3 mb-2 text-gray-800 font-thai-bold">{{ page }}</h1>
+
+	<!-- DataTales Example -->
+	<div class="card shadow mb-4">
+		<div class="card-header py-3 font-thai-bold">
+			{{ page }}
+		</div>
+		<div class="card-body">
+			<div class="table-responsive">
+				<table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+					<thead>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>ชื่อผู้ใช้งาน</th>
+							<th>ชื่อจริง</th>
+							<th>อีเมล</th>
+							<th>การทำงาน</th>
+						</tr>
+					</thead>
+					<tbody class="font-thai-light">
+						{% for datausers in users %}
+							<tr>
+								<td>{{ loop.index }}</td>
+								<td>{{ datausers.user }}</td>
+								<td>{{ datausers.name }}</td>
+								<td>{{ datausers.email }}</td>
+								<td>
+									<button class="btn btn-success btn-circle btn-sm" id="edit" data-uuid-user="{{ datausers.uuid }}"><i class="fas fa-edit"></i></button>
+									<button class="btn btn-danger btn-circle btn-sm" id="delete" data-uuid-user="{{ datausers.uuid }}" data-name-user="{{ datausers.user }}"><i class="fas fa-trash"></i></button>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+					<tfoot>
+						<tr class="font-thai-regular">
+							<th>#</th>
+							<th>ชื่อผู้ใช้งาน</th>
+							<th>ชื่อจริง</th>
+							<th>อีเมล</th>
+							<th>การทำงาน</th>
+						</tr>
+					</tfoot>
+				</table>
+			</div>
+		</div>
+	</div>
+</div>
+<!-- /.container-fluid -->
+<div class="modal" tabindex="-1" id="modal-data">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">แก้ไขข้อมูล</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body" id="infouserdata">
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+		<script src="{{ url_for('static',filename='vendor/datatables/jquery.dataTables.min.js')}}"></script>
+		<script src="{{ url_for('static',filename='vendor/datatables/dataTables.bootstrap4.min.js')}}"></script>
+		<script src="/js/app.users.js"></script>
+{% endblock %}

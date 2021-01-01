@@ -1,0 +1,57 @@
+<div class="container">
+	<form id="editroomdata" method="POST">
+		<input type="hidden" name="uuidroom" value="{{ dataroom.uuidroom }}">
+		<input type="hidden" name="uuidgroup" value="{{ dataroom.uuidgroup }}">
+		<input type="hidden" name="action" value="editroom">
+		<div class="form-group">
+			<label for="roomname" class="font-thai-regular">ห้องพัก</label>
+			<input type="text" class="form-control font-thai-light" id="roomname" name="roomname" placeholder="Room Name" value="{{ dataroom.room }}" required> 
+		</div>
+		<div class="form-group">
+			<label for="roomprice" class="font-thai-regular">ราคา / วัน</label>
+			<input type="number" class="form-control font-thai-light" id="roomprice" name="roomprice" placeholder="Room Price" value="{{ dataroom.price }}" required>
+		</div>
+		<div class="form-group">
+			<label for="roompassword" class="font-thai-regular">รหัสผ่านห้องพัก</label>
+			<input type="password" class="form-control font-thai-light" id="roompassword" name="roompassword" placeholder="Room Password" value="{{ dataroom.password_room }}" required>
+		</div>
+		<button type="submit" class="btn btn-success font-thai-regular btn-block"><i class="fas fa-edit"></i> แก้ไขห้องพัก</button>
+	</form>
+</div>
+
+<script>
+	$(document).ready(function(){
+		$("#editroomdata").submit(function(e){
+			e.preventDefault();
+
+			$.ajax({
+				url : "/edit",
+				type : "POST",
+				data : $(this).serialize(),
+				dataType : "json",
+				cache : false,
+				success : function(s){
+					Swal.fire({
+						icon : s.data.icon,
+						title : s.data.title,
+						text : s.data.description,
+						timer : 4000
+					}).then((result) =>{
+						if(result.value){
+							if(s.data.redirect != "") {
+								location.href=s.data.redirect;
+							}
+						}
+					});
+				},
+				error : function(e){
+					Swal.fire({
+						icon : "error",
+						title : "เกิดข้อผิดพลาด",
+						text : "ระบบเกิดปัญหาขัดข้อง โปรดติดต่อที่ฝ่ายผู้ดูแลระบบ"
+					});
+				}
+			})
+		});
+	});
+</script>

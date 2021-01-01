@@ -1,0 +1,110 @@
+{% extends "base/base.html" %}
+{% block contents %}
+<div class="overlay">
+	{% include "base/navbars.html" %}
+	<div class="container">
+		<div class="row align-items-center justify-content-center" style="height: 70vh;">
+			<div class="col-md-12 mb-4"> 
+				<div class="card" style="border-radius: 0; background-color: rgba(255,255,255, .85);">
+					<div class="card-body">
+					  <h4 class="font-thai-bold"><i class="fas fa-user"></i> ข้อมูลผู้ใช้งาน</h4>
+					  <hr>
+					  <div class="form-group">
+						<label for="name" class="font-thai-regular">ชื่อผู้ใช้งาน</label>
+						<input type="text" class="form-control font-thai-light" placeholder="" value="{{ profile.username }}" disabled>
+					  </div>
+					  <hr>
+					  <div class="form-group">
+						<label for="name" class="font-thai-regular">ชื่อจริง</label>
+						<input type="text" class="form-control font-thai-light" placeholder="" value="{{ profile.details.firstname }}" disabled>
+					  </div>
+					  <div class="form-group">
+						<label for="name" class="font-thai-regular">นามสกุล</label>
+						<input type="text" class="form-control font-thai-light" placeholder="" value="{{ profile.details.lastname }}" disabled>
+					  </div>
+					  <div class="form-group">
+						<label for="name" class="font-thai-regular">เพศ</label>
+						<input type="text" class="form-control font-thai-light" placeholder="" value="{{ formatgender(profile.details.gender) }}" disabled>
+					  </div>
+					  <hr>
+					  <button class="btn btn-success font-thai-regular btn-block changeprofile"><i class="fas fa-edit"></i> แก้ไขข้อมูล</button>
+					  <button class="btn btn-primary font-thai-regular btn-block password"><i class="fas fa-key"></i> เปลี่ยนรหัสผ่าน</button>
+					</div>
+				  </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="editprofile">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">แก้ไขข้อมูล</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="profile-change" method="POST">
+					<input type="hidden" name="action" value="editprofile">
+					<div class="form-group">
+						<label for="name" class="font-thai-regular">ชื่อจริง</label>
+						<input type="text" name="firstname" class="form-control font-thai-light" placeholder="First Name" value="{{ profile.details.firstname }}" required>
+					</div>
+					<div class="form-group">
+						<label for="name" class="font-thai-regular">นามสกุล</label>
+						<input type="text" name="lastname" class="form-control font-thai-light" placeholder="Last Name" value="{{ profile.details.lastname }}" required>
+					</div>
+					<div class="form-group">
+						<label for="name" class="font-thai-regular">เพศ</label>
+						<select class="form-control font-thai-light" name="gender" required>
+							<option value="male" {% if profile.details.gender == 'male' %}selected{% endif %}>ชาย</option>
+							<option value="female" {% if profile.details.gender == 'female' %}selected{% endif %}>หญิง</option>
+						</select>
+					</div>
+					<button type="submit" class="btn btn-success font-thai-regular btn-block profilechange">แก้ไขข้อมูล</button>
+				</form>
+			</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+		</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" tabindex="-1" id="mchangepassowrd">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h5 class="modal-title font-thai-bold">แก้ไขข้อมูล</h5>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<div class="modal-body">
+				<form id="passwordchange" method="POST">
+					<input type="hidden" name="action" value="changepassowrd">
+					<div class="form-group">
+						<label for="name" class="font-thai-regular">รหัสผ่านใหม่</label>
+						<input type="password" name="password" placeholder="Password" class="form-control font-thai-light">
+					</div>
+					<div class="form-group">
+						<label for="name" class="font-thai-regular">รหัสผ่านอีกครั้ง</label>
+						<input type="password" name="conpassword" placeholder="Confrim Password" class="form-control font-thai-light" required>
+					</div>
+					<button type="submit" class="btn btn-success font-thai-regular btn-block passwd">เปลี่ยนรหัสผ่าน</button>
+				</form>
+			</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-secondary font-thai-regular" data-dismiss="modal">ปิดหน้าต่าง</button>
+		</div>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+	<script src="{{ url_for('static',filename='/vendor/app.profile.js') }}"></script>
+{% endblock %}
