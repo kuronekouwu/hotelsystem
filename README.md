@@ -24,7 +24,7 @@
 
 พร้อมใช้งาน!
 
-วิธีติดตั้ง
+## วิธีติดตั้ง
 - ติดตั้ง Library ดังนี้  pip install flask, pymongo, fastapi, uvicorn, aiofiles, gevent, libscrc, qrcode, requests, bcrypt
 - ตั้งค่า config.json ใน Folder "Bin" 
 - อัพ File JSON ขึ้น MongoDB โดย File DB จะอยู่ใน db.rar
@@ -32,16 +32,17 @@
 
 พร้อมใช้งาน!
 
-URL User : http://127.0.0.1:8082
-URL Admin : http://127.0.0.1:9000
+## URL
+- URL User : http://127.0.0.1:8082
+- URL Admin : http://127.0.0.1:9000
 
-หน้าบ้าน 
-User : members1
-Pass : members1
+## หน้าบ้าน 
+- User : members1
+- Pass : members1
 
-หลังบ้าน 
-User : admin
-Pass : admin
+## หลังบ้าน 
+- User : admin
+- Pass : admin
 
 ## สุดท้ายนี้
 Happy New Year 2021 ครับ!
