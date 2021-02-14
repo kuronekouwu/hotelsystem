@@ -17,7 +17,7 @@
 - MongoDB [ BSON ]
 
 ## วิธีติดตั้ง
-- ติดตั้ง Library ดังนี้  pip install flask pymongo fastapi uvicorn aiofiles gevent libscrc qrcode requests bcrypt click
+- ติดตั้ง Library ดังนี้  pip install flask pymongo fastapi uvicorn aiofiles gevent libscrc qrcode requests bcrypt click Pillow
 - ตั้งค่า config.json ใน Folder "Bin" 
 - อัพ File JSON ขึ้น MongoDB โดย File DB จะอยู่ใน db.rar
 - รัน File servermain.py, serverapi.py และ serveradmin.py
